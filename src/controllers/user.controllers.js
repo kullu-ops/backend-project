@@ -26,7 +26,7 @@ const registerUser = asynchandler(async (req, res) => {
     }
     //this statement check that if user already exist 
     //vaise toh findone bas ek hi argument check karta h par jab hum isme $or karke likhte h toh yeh usme multiple argumet bhi check kar leta h aur uska return true ya false m deta h
-    const existedUser = User.findOne({
+    const existedUser =await user.findOne({
         $or: [{ username }, { email }]
     })
     if (existedUser) {
@@ -44,7 +44,7 @@ const registerUser = asynchandler(async (req, res) => {
 
     if (!avatar)
         throw new ApiError(400, "the Avatar field is required")
-    const user = await User.create({
+    const User = await user.create({
         fullname,
         avatar: avatar.url,
         coverimage: coverimage?.url || "",
@@ -53,7 +53,7 @@ const registerUser = asynchandler(async (req, res) => {
         username: username.toLowerCase()
     })
 
-    const createduser = await User.findById(user._id).select(
+    const createduser = await user.findById(User._id).select(
         "-password -refreshTokens"
     )
 
